@@ -11,7 +11,6 @@ namespace RPGame.Tiles
     public class Tileset
     {
         Surface[,] tileSurfaces;
-        Color transparentColor;
 
         Bitmap RawTileset
         {
@@ -26,15 +25,13 @@ namespace RPGame.Tiles
         }
 
         public Tileset(Bitmap rawTileset, int tileSize)
-            : this(rawTileset, new Size(tileSize, tileSize), Color.Empty)
+            : this(rawTileset, new Size(tileSize, tileSize))
         { }
 
-        public Tileset(Bitmap rawTileset, Size tileSize, Color transparentColor)
+        public Tileset(Bitmap rawTileset, Size tileSize)
         {
             RawTileset = rawTileset;
             TileSize = tileSize;
-
-            this.transparentColor = transparentColor;
 
             this.tileSurfaces = new Surface[rawTileset.Width / tileSize.Width, rawTileset.Height / tileSize.Height];
         }
@@ -48,12 +45,6 @@ namespace RPGame.Tiles
                 Rectangle tileRect = new Rectangle(tileX, tileY, TileSize.Width, TileSize.Height);
                 Bitmap tileBitmap = RawTileset.Clone(tileRect, PixelFormat.DontCare);
                 Surface tileSurface = new Surface(tileBitmap);
-
-                if (this.transparentColor != Color.Empty)
-                {
-                    tileSurface.Transparent = true;
-                    tileSurface.TransparentColor = this.transparentColor;
-                }
 
                 this.tileSurfaces[x, y] = tileSurface;
             }

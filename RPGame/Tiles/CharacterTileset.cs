@@ -16,7 +16,7 @@ namespace RPGame.Tiles
             Standing = 1
         }
 
-        public CharacterTileset(Bitmap rawTileset) : base(rawTileset, new Size(24, 32), Color.FromArgb(255, 0, 255)) { }
+        public CharacterTileset(Bitmap rawTileset) : base(rawTileset, new Size(24, 32)) { }
 
         public Surface GetPose(CharacterPoseType pose, Direction direction)
         {

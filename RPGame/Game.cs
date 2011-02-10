@@ -39,11 +39,6 @@ namespace RPGame
             this.map.MessageIncoming += this.cameraSystem.ReceiveMessage;
             this.map.Load();
 
-            using (StreamWriter writer = new StreamWriter(@"C:\Users\Nico\Desktop\foo.xml"))
-            {
-                Map.Save(writer, map);
-            }
-
             Events.Run();
         }
 

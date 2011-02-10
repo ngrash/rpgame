@@ -32,30 +32,7 @@ namespace RPGame
                 entity.Update(timeElapsed);
             }
         }
-
-        public static Map Load(StreamReader mapReader)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(Map));
-            Map map = (Map)serializer.Deserialize(mapReader);
-
-            foreach (Layer layer in map.Layers)
-            {
-                if (layer is EntityLayer)
-                {
-                    map.entityLayer = (EntityLayer)layer;
-                    break;
-                }
-            }
-
-            return map;
-        }
-
-        public static void Save(StreamWriter mapWriter, Map map)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(Map), new Type[] { typeof(TileLayer), typeof(EntityLayer) });
-            serializer.Serialize(mapWriter, map);
-        }
-
+    
         public Map()
         {
             Layers = new List<Layer>();
@@ -68,6 +45,7 @@ namespace RPGame
 
             Layers.Add(this.entityLayer);
 
+            // Spieler erzeugen
             Entity player = new Entity()
             {
                 Position = new Point(0, 0)
@@ -75,13 +53,15 @@ namespace RPGame
             player.Features.Add(new PlayerCharacterFeature());
             player.Features.Add(new AnimatedCharacterFeature()
             {
-                Tileset = new CharacterTileset(new Bitmap(@"C:\Users\Nico\Desktop\res_viewer.png")),
-                Offset = new Point(-12, -25)
+                Tileset = new CharacterTileset(new Bitmap(@"H:\player.png")),
+                Offset = new Point(-12, -25),
+                Direction = Direction.Down,
+                Pose = CharacterTileset.CharacterPoseType.Standing
             });
             player.Features.Add(new MoveFeature());
             player.Features.Add(new CollidableFeature(this.collisionSystem)
             {
-                HitBox = new Rectangle(-12, -25, 24, 30)
+                HitBox = new Rectangle(-8, -1, 15, 7)
             });
             player["SPEED"] = 2;
             SpawnEntity(player);
@@ -90,6 +70,7 @@ namespace RPGame
                 TargetEntity = player
             });
 
+            // Hindernis erzeugen
             Entity obstacle = new Entity() {
                 Position = new Point(30, 30)
             };
@@ -98,6 +79,24 @@ namespace RPGame
                 HitBox = new Rectangle(0, 0, 10, 10)
             });
             SpawnEntity(obstacle);
+
+            // Gegner erzeugen
+            Entity enemy = new Entity()
+            {
+                Position = new Point(100, 100)
+            };
+            enemy.Features.Add(new AnimatedCharacterFeature()
+            {
+                Tileset = new CharacterTileset(new Bitmap(@"H:\enemy.png")),
+                Offset = new Point(-12, -25),
+                Direction = Direction.Down,
+                Pose = CharacterTileset.CharacterPoseType.Standing
+            });
+            enemy.Features.Add(new CollidableFeature(this.collisionSystem)
+            {
+                HitBox = new Rectangle(-8, -5, 15, 10)
+            });
+            SpawnEntity(enemy);
         }
 
         void SpawnEntity(Entity entity)

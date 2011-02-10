@@ -53,7 +53,7 @@ namespace RPGame
             player.Features.Add(new PlayerCharacterFeature());
             player.Features.Add(new AnimatedCharacterFeature()
             {
-                Tileset = new CharacterTileset(new Bitmap(@"H:\player.png")),
+                Tileset = new CharacterTileset(new Bitmap(@"X:\Develop\Projekte\RPGame\RPGame\bin\Debug\player.png")),
                 Offset = new Point(-12, -25),
                 Direction = Direction.Down,
                 Pose = CharacterTileset.CharacterPoseType.Standing
@@ -87,7 +87,7 @@ namespace RPGame
             };
             enemy.Features.Add(new AnimatedCharacterFeature()
             {
-                Tileset = new CharacterTileset(new Bitmap(@"H:\enemy.png")),
+                Tileset = new CharacterTileset(new Bitmap(@"X:\Develop\Projekte\RPGame\RPGame\bin\Debug\enemy.png")),
                 Offset = new Point(-12, -25),
                 Direction = Direction.Down,
                 Pose = CharacterTileset.CharacterPoseType.Standing

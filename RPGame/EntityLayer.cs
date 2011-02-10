@@ -35,10 +35,11 @@ namespace RPGame
 
             Point offset = new Point(camera.X - (viewSize.Width / 2), camera.Y - (viewSize.Height / 2));
 
-            foreach (Entity entity in Entities)
+            foreach (Entity entity in Entities.OrderBy(e => e.Position.Y))
             {
                 Point entityScreenCoordinates = new Point((offset.X * -1) + entity.Position.X, (offset.Y * -1) + entity.Position.Y);
 
+                // Sprite zeichnen, falls vorhanden
                 SpriteFeature spriteFeature = entity.Features.Get<SpriteFeature>();
                 if (spriteFeature != null)
                 {
@@ -48,12 +49,14 @@ namespace RPGame
                     viewSpace.Blit(entitySprite, spriteScreenCoordinates);
                 }
 
+                // Kollisionsbox zeichen, falls das Entity kollidierbar ist
                 CollidableFeature collidableFeature = entity.Features.Get<CollidableFeature>();
                 if (collidableFeature != null)
                 {
                     viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + collidableFeature.HitBox.X, entityScreenCoordinates.Y + collidableFeature.HitBox.Y), collidableFeature.HitBox.Size), Color.Red);
                 }
 
+                // Eigentliche Position des Entitys hervorheben
                 viewSpace.Draw(new Circle(entityScreenCoordinates, 3), Color.Yellow);
             }
 

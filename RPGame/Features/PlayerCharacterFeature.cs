@@ -26,50 +26,49 @@ namespace RPGame.Features
 
                 if (this.isMoving && !keyboardEvent.Down)
                 {
-                    Entity.ProcessMessage(new StopMovingMessage());
-                    this.isMoving = false;
-                }
-                else
-                {
-                    Direction newDirection = Direction.Down;
+                    Key key = keyboardEvent.Key;
 
-                    switch (keyboardEvent.Key)
+                    if (GetDirectionFromKey(key) == (Direction)Entity["DIRECTION"])
                     {
-                        case Key.UpArrow:
-                            this.isMoving = true;
-                            newDirection = Direction.Up;
-                            break;
-                        case Key.DownArrow:
-                            this.isMoving = true;
-                            newDirection = Direction.Down;
-                            break;
-                        case Key.LeftArrow:
-                            this.isMoving = true;
-                            newDirection = Direction.Left;
-                            break;
-                        case Key.RightArrow:
-                            this.isMoving = true;
-                            newDirection = Direction.Right;
-                            break;
-                        case Key.Space:
-                            Attack();
-                            break;
+                        Entity.PublishMessage(new StopMovingMessage());
+                        this.isMoving = false;
                     }
-
-                    if (this.isMoving)
+                }
+                else if (keyboardEvent.Down)
+                {
+                    Direction newDirection = GetDirectionFromKey(keyboardEvent.Key);
+                    if (newDirection != Direction.None)
                     {
+                        this.isMoving = true;
+
                         Entity["DIRECTION"] = newDirection;
-                        Entity.ProcessMessage(new StartMovingMessage());
+                        Entity.PublishMessage(new StartMovingMessage());
                     }
                 }
             }
         }
 
-        void Attack()
+        Direction GetDirectionFromKey(Key key)
         {
-            Entity hit = new Entity();
-            hit.Features.Add(new HitFeature());
-            //hit.Features.Add(new CollidableFeature());
+            Direction newDirection = Direction.None;
+
+            switch (key)
+            {
+                case Key.UpArrow:
+                    newDirection = Direction.Up;
+                    break;
+                case Key.DownArrow:
+                    newDirection = Direction.Down;
+                    break;
+                case Key.LeftArrow:
+                    newDirection = Direction.Left;
+                    break;
+                case Key.RightArrow:
+                    newDirection = Direction.Right;
+                    break;
+            }
+
+            return newDirection;
         }
 
         public void Update(float timeElapsed)

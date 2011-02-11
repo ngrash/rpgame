@@ -43,7 +43,6 @@
     <Compile Include="CollisionSystem.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="EntityCollection.cs" />
     <Compile Include="EntityLayer.cs" />
     <Compile Include="Features\AnimatedCharacterFeature.cs" />
     <Compile Include="Features\AttackFeature.cs" />

@@ -30,7 +30,7 @@ namespace RPGame.Features
 
                     if (GetDirectionFromKey(key) == (Direction)Entity["DIRECTION"])
                     {
-                        Entity.PublishMessage(new StopMovingMessage());
+                        Entity.ProcessMessage(new StopMovingMessage());
                         this.isMoving = false;
                     }
                 }
@@ -42,7 +42,7 @@ namespace RPGame.Features
                         this.isMoving = true;
 
                         Entity["DIRECTION"] = newDirection;
-                        Entity.PublishMessage(new StartMovingMessage());
+                        Entity.ProcessMessage(new StartMovingMessage());
                     }
                 }
             }

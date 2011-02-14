@@ -18,10 +18,5 @@ namespace RPGame.Features
             get { return (int)Entity["MAX_HEALTH"]; }
             set { Entity["MAX_HEALT"] = value; }
         }
-
-        public override void Update(float timeElapsed)
-        {
-            
-        }
     }
 }

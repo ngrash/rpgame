@@ -7,14 +7,8 @@ using System.Drawing;
 
 namespace RPGame.Features
 {
-    public class SpriteFeature : IFeature
+    public class SpriteFeature : Feature
     {
-        public Entity Entity
-        {
-            get;
-            set;
-        }
-
         public Sprite Sprite
         {
             get;
@@ -25,11 +19,6 @@ namespace RPGame.Features
         {
             get;
             set;
-        }
-
-        public virtual void Update(float timeElapsed)
-        {
-
         }
     }
 }

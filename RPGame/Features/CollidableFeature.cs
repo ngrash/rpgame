@@ -40,10 +40,5 @@ namespace RPGame.Features
                 Entity.Position = desiredPosition;
             }
         }
-
-        public override void Update(float timeElapsed)
-        {
-            
-        }
     }
 }

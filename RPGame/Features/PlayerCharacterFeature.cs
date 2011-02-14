@@ -8,15 +8,9 @@ using SdlDotNet.Input;
 
 namespace RPGame.Features
 {
-    class PlayerCharacterFeature : IFeature, IMessageReceiver
+    class PlayerCharacterFeature : Feature, IMessageReceiver
     {
         bool isMoving = false;
-
-        public Entity Entity
-        {
-            get;
-            set;
-        }
 
         public void ReceiveMessage(IMessage message)
         {
@@ -69,11 +63,6 @@ namespace RPGame.Features
             }
 
             return newDirection;
-        }
-
-        public void Update(float timeElapsed)
-        {
-            
         }
     }
 }

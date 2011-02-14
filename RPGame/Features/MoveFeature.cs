@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace RPGame.Features
 {
-    class MoveFeature : IFeature, IMessageReceiver
+    class MoveFeature : Feature, IMessageReceiver
     {
         bool isMoving = false;
         Direction movingDirection;
@@ -26,13 +26,7 @@ namespace RPGame.Features
             }
         }
 
-        public Entity Entity
-        {
-            get;
-            set;
-        }
-
-        public void Update(float timeElapsed)
+        public override void Update(float timeElapsed)
         {
             if (this.isMoving)
             {

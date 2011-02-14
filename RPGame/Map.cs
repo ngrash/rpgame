@@ -70,16 +70,6 @@ namespace RPGame
                 TargetEntity = player
             });
 
-            // Hindernis erzeugen
-            Entity obstacle = new Entity() {
-                Position = new Point(30, 30)
-            };
-            obstacle.Features.Add(new CollidableFeature(this.collisionSystem)
-            {
-                HitBox = new Rectangle(0, 0, 10, 10)
-            });
-            SpawnEntity(obstacle);
-
             // Gegner erzeugen
             Entity enemy = new Entity()
             {

@@ -53,7 +53,21 @@ namespace RPGame
                 CollidableFeature collidableFeature = entity.Features.Get<CollidableFeature>();
                 if (collidableFeature != null)
                 {
-                    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + collidableFeature.HitBox.X, entityScreenCoordinates.Y + collidableFeature.HitBox.Y), collidableFeature.HitBox.Size), Color.Red);
+                    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + collidableFeature.HitBox.X, entityScreenCoordinates.Y + collidableFeature.HitBox.Y), collidableFeature.HitBox.Size), Color.Green);
+                }
+
+                // Destructiblebox zeichen
+                DestructibleFeature destructibleFeature = entity.Features.Get<DestructibleFeature>();
+                if (destructibleFeature != null)
+                {
+                    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + destructibleFeature.HitBox.X, entityScreenCoordinates.Y + destructibleFeature.HitBox.Y), destructibleFeature.HitBox.Size), Color.Blue);
+                }
+
+                // HitFeature HitBox zeichen
+                HitFeature hitFeature = entity.Features.Get<HitFeature>();
+                if (hitFeature != null)
+                {
+                    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + hitFeature.HitBox.X, entityScreenCoordinates.Y + hitFeature.HitBox.Y), hitFeature.HitBox.Size), Color.Red);
                 }
 
                 // Eigentliche Position des Entitys hervorheben

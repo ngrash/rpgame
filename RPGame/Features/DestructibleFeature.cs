@@ -2,21 +2,63 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
+using RPGame.Messaging.Messages;
+using RPGame.Messaging;
 
 namespace RPGame.Features
 {
-    class DestructibleFeature : Feature
+    class DestructibleFeature : Feature, IMessageReceiver
     {
+        CollisionSystem collisionSystem;
+
         public int Health
         {
-            get { return (int)Entity["HEALTH"]; }
-            set { Entity["HEALTH"] = value; }
+            get;
+            set;
         }
 
         public int MaxHealt
         {
-            get { return (int)Entity["MAX_HEALTH"]; }
-            set { Entity["MAX_HEALT"] = value; }
+            get;
+            set;
+        }
+
+        public DestructibleFeature(CollisionSystem collisionSystem)
+        {
+            this.collisionSystem = collisionSystem;
+        }
+
+        public override void Update(float timeElapsed)
+        {
+            this.collisionSystem.AddHitBox(Entity, HitBox);
+
+            if (Health <= 0)
+            {
+                Entity.ProcessMessage(new KillMessage()
+                {
+                    EntityToKill = Entity
+                });
+            }
+        }
+
+        public Rectangle HitBox
+        {
+            get;
+            set;
+        }
+
+        public void ReceiveMessage(IMessage message)
+        {
+            if (message is CollisionMessage)
+            {
+                Entity entity = ((CollisionMessage)message).WithEntity;
+                HitFeature entityHitFeature = entity.Features.Get<HitFeature>();
+                if (entityHitFeature != null)
+                {
+                    Health -= entityHitFeature.Damage;
+                }
+            }
         }
     }
 }

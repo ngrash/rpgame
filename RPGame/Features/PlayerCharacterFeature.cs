@@ -38,6 +38,16 @@ namespace RPGame.Features
                         Entity["DIRECTION"] = newDirection;
                         Entity.ProcessMessage(new StartMovingMessage());
                     }
+                    // irgendeine Taste
+                    else
+                    {
+                        switch (keyboardEvent.Key)
+                        {
+                            case Key.Space:
+                                Entity.ProcessMessage(new AttackMessage());
+                                break;
+                        }
+                    }
                 }
             }
         }

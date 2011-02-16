@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using RPGame.Messaging;
 using RPGame.Messaging.Messages;
+using System.Drawing;
 
 namespace RPGame.Features
 {
@@ -13,21 +14,36 @@ namespace RPGame.Features
 
         public AttackFeature(CollisionSystem collisionSystem)
         {
-
-        }
-
-        public override void Update(float timeElapsed)
-        {
-            throw new NotImplementedException();
+            this.collisionSystem = collisionSystem;
         }
 
         public void ReceiveMessage(IMessage message)
         {
             if (message is AttackMessage)
             {
-                Direction currentDirection = (Direction)Entity["DIRECTION"];
-
                 // spawn hit entity in current direction
+                Entity hit = new Entity()
+                {
+                    Position = Entity.Position,
+                    Name = "hit"
+                };
+                hit["SPEED"] = 3;
+                hit["DIRECTION"] = Entity["DIRECTION"];
+                hit.Features.Add(new MoveFeature());
+                hit.Features.Add(new DieOnCollisonFeature());
+                hit.Features.Add(new DieAfterTimeFeature() {
+                    TimeTillDeath = 0.5f
+                });
+                hit.Features.Add(new HitFeature(this.collisionSystem) {
+                    HitBox = new Rectangle(-5, -5, 10, 10),
+                    Damage = 10
+                });
+                hit.ProcessMessage(new StartMovingMessage());
+
+                Entity.ProcessMessage(new SpawnMessage()
+                {
+                    EntityToSpawn = hit
+                });
             }
         }
     }

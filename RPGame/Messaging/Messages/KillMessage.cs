@@ -5,7 +5,12 @@ using System.Text;
 
 namespace RPGame.Messaging.Messages
 {
-    class AttackMessage : IMessage
+    class KillMessage : IMessage
     {
+        public Entity EntityToKill
+        {
+            get;
+            set;
+        }
     }
 }

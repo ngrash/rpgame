@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LightCore">
+      <HintPath>..\..\..\Misc\bin\LightCore-1.4.1-net-4.0\LightCore.dll</HintPath>
+    </Reference>
     <Reference Include="SdlDotNet, Version=6.1.0.0, Culture=neutral, PublicKeyToken=26ad4f7e10c61408, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -48,6 +51,8 @@
     <Compile Include="Features\AttackFeature.cs" />
     <Compile Include="Features\CollidableFeature.cs" />
     <Compile Include="Features\DestructibleFeature.cs" />
+    <Compile Include="Features\DieAfterTimeFeature.cs" />
+    <Compile Include="Features\DieOnCollisonFeature.cs" />
     <Compile Include="Features\Feature.cs" />
     <Compile Include="Features\FeatureContainer.cs" />
     <Compile Include="Features\HitFeature.cs" />
@@ -58,7 +63,10 @@
     <Compile Include="Game.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="Messaging\Messages\AttackMessage.cs" />
+    <Compile Include="Messaging\Messages\CollisionMessage.cs" />
+    <Compile Include="Messaging\Messages\KillMessage.cs" />
     <Compile Include="Messaging\Messages\SetFocusMessage.cs" />
+    <Compile Include="Messaging\Messages\SpawnMessage.cs" />
     <Compile Include="Messaging\Messages\StartMovingMessage.cs" />
     <Compile Include="Messaging\Messages\StopMovingMessage.cs" />
     <Compile Include="TileLayer.cs" />

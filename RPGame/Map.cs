@@ -16,9 +16,14 @@ namespace RPGame
 {
     public class Map : IMessageChannel, IMessageReceiver
     {
+        const float MESSAGE_DELAY = 0.2f;
+        float lastMessage = 0;
+
         EntityLayer entityLayer = new EntityLayer();
         CollisionSystem collisionSystem = new CollisionSystem();
-        Stack<Entity> entitesToRemove = new Stack<Entity>();
+        Stack<Entity> entitiesToRemove = new Stack<Entity>();
+        Stack<Entity> entitiesToAdd = new Stack<Entity>();
+        Queue<Entity> messages = new Queue<Entity>();
 
         public List<Layer> Layers
         {
@@ -35,10 +40,27 @@ namespace RPGame
                 entity.Update(timeElapsed);
             }
 
-            while (this.entitesToRemove.Count > 0)
+            while (this.entitiesToRemove.Count > 0)
             {
-                Entity entityToRemove = this.entitesToRemove.Pop();
+                Entity entityToRemove = this.entitiesToRemove.Pop();
                 KillEntity(entityToRemove);
+            }
+
+            while (this.entitiesToAdd.Count > 0)
+            {
+                Entity entityToAdd = this.entitiesToAdd.Pop();
+                SpawnEntity(entityToAdd);
+            }
+
+            this.lastMessage += timeElapsed;
+            if (this.lastMessage >= MESSAGE_DELAY)
+            {
+                if (this.messages.Count > 0)
+                {
+                    SpawnEntity(this.messages.Dequeue());
+                }
+
+                this.lastMessage = 0;
             }
         }
     
@@ -74,6 +96,12 @@ namespace RPGame
                 HitBox = new Rectangle(-8, -1, 15, 7)
             });
             player.Features.Add(new AttackFeature(this.collisionSystem));
+            player.Features.Add(new LevelFeature()
+            {
+                Experience = 0,
+                Level = 1,
+                RequiredExperience = 10
+            });
             player["SPEED"] = 2;
             SpawnEntity(player);
             ProcessMessage(new SetFocusMessage()
@@ -98,9 +126,13 @@ namespace RPGame
             {
                 HitBox = new Rectangle(-8, -5, 15, 10)
             });
+            enemy.Features.Add(new ExperienceFeature()
+            {
+                Experience = 30
+            });
             enemy.Features.Add(new DestructibleFeature(this.collisionSystem)
             {
-                Health = 100,
+                Health = 15,
                 HitBox = new Rectangle(-8, -12, 15, 10)
             });
             SpawnEntity(enemy);
@@ -150,13 +182,47 @@ namespace RPGame
             if (message is SpawnMessage)
             {
                 Entity entityToSpawn = ((SpawnMessage)message).EntityToSpawn;
-                SpawnEntity(entityToSpawn);
+                this.entitiesToAdd.Push(entityToSpawn);
             }
             else if (message is KillMessage)
             {
                 Entity entityToKill = ((KillMessage)message).EntityToKill;
-                this.entitesToRemove.Push(entityToKill);
+                this.entitiesToRemove.Push(entityToKill);
             }
+            else if (message is ExperienceMessage)
+            {
+                ExperienceMessage expMessage = (ExperienceMessage)message;
+                SpawnText(expMessage.Experience.ToString(), Color.Blue, expMessage.Target.Position, 13);
+            }
+            else if (message is LevelUpMessage)
+            {
+                LevelUpMessage levelUpMessage = (LevelUpMessage)message;
+                string text = string.Format("Level {0}", levelUpMessage.NewLevel);
+                SpawnText(text, Color.Yellow, new Point(levelUpMessage.Target.Position.X, levelUpMessage.Target.Position.Y - 2), 15);
+            }
+        }
+
+        private void SpawnText(string text, Color color, Point position, int fontSize)
+        {
+            Entity textEntity = new Entity();
+            textEntity.Features.Add(new MoveFeature());
+            textEntity["DIRECTION"] = Direction.Up;
+            textEntity["SPEED"] = 1;
+            textEntity.ProcessMessage(new StartMovingMessage());
+            textEntity.Position = position;
+            textEntity.Features.Add(new DieAfterTimeFeature()
+            {
+                TimeTillDeath = 1
+            });
+            textEntity.Features.Add(new SpriteFeature());
+            textEntity.Features.Add(new TextFeature()
+            {
+                Entity = textEntity,
+                Color = color,
+                Font = new SdlDotNet.Graphics.Font(@"X:\Develop\Projekte\RPGame\RPGame\bin\Debug\arial.ttf", fontSize),
+                Text = text
+            });
+            messages.Enqueue(textEntity);
         }
     }
 }

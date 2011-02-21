@@ -22,6 +22,12 @@ namespace RPGame.Features
             set;
         }
 
+        public Entity SpawnedBy
+        {
+            get;
+            set;
+        }
+
         public HitFeature(CollisionSystem collisionSystem)
         {
             this.collisionSystem = collisionSystem;

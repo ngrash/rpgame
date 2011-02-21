@@ -36,7 +36,8 @@ namespace RPGame.Features
                 });
                 hit.Features.Add(new HitFeature(this.collisionSystem) {
                     HitBox = new Rectangle(-5, -5, 10, 10),
-                    Damage = 10
+                    Damage = 10,
+                    SpawnedBy = Entity
                 });
                 hit.ProcessMessage(new StartMovingMessage());
 

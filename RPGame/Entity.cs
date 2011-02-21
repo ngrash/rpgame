@@ -45,6 +45,12 @@ namespace RPGame
             set;
         }
 
+        public string Name
+        {
+            get;
+            set;
+        }
+
         [XmlIgnore]
         public FeatureContainer Features
         {

@@ -57,6 +57,15 @@ namespace RPGame.Features
                 if (entityHitFeature != null)
                 {
                     Health -= entityHitFeature.Damage;
+
+                    ExperienceFeature experienceFeature = Entity.Features.Get<ExperienceFeature>();
+                    if (experienceFeature != null)
+                    {
+                        if (!experienceFeature.Entities.Contains(entityHitFeature.SpawnedBy))
+                        {
+                            experienceFeature.Entities.Add(entityHitFeature.SpawnedBy);
+                        }
+                    }
                 }
             }
         }

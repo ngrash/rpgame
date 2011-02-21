@@ -44,34 +44,36 @@ namespace RPGame
                 if (spriteFeature != null)
                 {
                     Sprite entitySprite = spriteFeature.Sprite;
-                    Point spriteScreenCoordinates = new Point(entityScreenCoordinates.X + spriteFeature.Offset.X, entityScreenCoordinates.Y + spriteFeature.Offset.Y);
-
-                    viewSpace.Blit(entitySprite, spriteScreenCoordinates);
+                    if (entitySprite != null)
+                    {
+                        Point spriteScreenCoordinates = new Point(entityScreenCoordinates.X + spriteFeature.Offset.X, entityScreenCoordinates.Y + spriteFeature.Offset.Y);
+                        viewSpace.Blit(entitySprite, spriteScreenCoordinates);
+                    }
                 }
 
-                // Kollisionsbox zeichen, falls das Entity kollidierbar ist
-                CollidableFeature collidableFeature = entity.Features.Get<CollidableFeature>();
-                if (collidableFeature != null)
-                {
-                    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + collidableFeature.HitBox.X, entityScreenCoordinates.Y + collidableFeature.HitBox.Y), collidableFeature.HitBox.Size), Color.Green);
-                }
+                //// Kollisionsbox zeichen, falls das Entity kollidierbar ist
+                //CollidableFeature collidableFeature = entity.Features.Get<CollidableFeature>();
+                //if (collidableFeature != null)
+                //{
+                //    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + collidableFeature.HitBox.X, entityScreenCoordinates.Y + collidableFeature.HitBox.Y), collidableFeature.HitBox.Size), Color.Green);
+                //}
 
-                // Destructiblebox zeichen
-                DestructibleFeature destructibleFeature = entity.Features.Get<DestructibleFeature>();
-                if (destructibleFeature != null)
-                {
-                    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + destructibleFeature.HitBox.X, entityScreenCoordinates.Y + destructibleFeature.HitBox.Y), destructibleFeature.HitBox.Size), Color.Blue);
-                }
+                //// Destructiblebox zeichen
+                //DestructibleFeature destructibleFeature = entity.Features.Get<DestructibleFeature>();
+                //if (destructibleFeature != null)
+                //{
+                //    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + destructibleFeature.HitBox.X, entityScreenCoordinates.Y + destructibleFeature.HitBox.Y), destructibleFeature.HitBox.Size), Color.Blue);
+                //}
 
-                // HitFeature HitBox zeichen
-                HitFeature hitFeature = entity.Features.Get<HitFeature>();
-                if (hitFeature != null)
-                {
-                    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + hitFeature.HitBox.X, entityScreenCoordinates.Y + hitFeature.HitBox.Y), hitFeature.HitBox.Size), Color.Red);
-                }
+                //// HitFeature HitBox zeichen
+                //HitFeature hitFeature = entity.Features.Get<HitFeature>();
+                //if (hitFeature != null)
+                //{
+                //    viewSpace.Draw(new Box(new Point(entityScreenCoordinates.X + hitFeature.HitBox.X, entityScreenCoordinates.Y + hitFeature.HitBox.Y), hitFeature.HitBox.Size), Color.Red);
+                //}
 
-                // Eigentliche Position des Entitys hervorheben
-                viewSpace.Draw(new Circle(entityScreenCoordinates, 3), Color.Yellow);
+                //// Eigentliche Position des Entitys hervorheben
+                //viewSpace.Draw(new Circle(entityScreenCoordinates, 3), Color.Yellow);
             }
 
             return viewSpace;

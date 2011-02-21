@@ -13,7 +13,6 @@ namespace RPGame.Features
 {
     public class AnimatedCharacterFeature : SpriteFeature, IMessageReceiver
     {
-        bool isMoving;
         float lastFrame = 0;
 
         public Direction Direction
@@ -62,13 +61,10 @@ namespace RPGame.Features
             {
                 Direction = (Direction)Entity["DIRECTION"];
                 Pose = CharacterTileset.CharacterPoseType.Walking1;
-
-                this.isMoving = true;
             }
             else if (message is StopMovingMessage)
             {
                 Pose = CharacterTileset.CharacterPoseType.Standing;
-                isMoving = false;
             }
         }
     }

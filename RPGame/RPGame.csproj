@@ -61,6 +61,7 @@
     <Compile Include="Features\SpriteFeature.cs" />
     <Compile Include="Features\TextFeature.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="HudLayer.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="Messaging\Messages\AttackMessage.cs" />
     <Compile Include="Messaging\Messages\CollisionMessage.cs" />

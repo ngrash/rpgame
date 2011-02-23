@@ -82,6 +82,9 @@ namespace RPGame
                 Position = new Point(0, 0),
                 Name = "player"
             };
+
+            Layers.Add(new HudLayer(player));
+
             player.Features.Add(new PlayerCharacterFeature());
             player.Features.Add(new AnimatedCharacterFeature()
             {
@@ -98,7 +101,7 @@ namespace RPGame
             player.Features.Add(new AttackFeature(this.collisionSystem));
             player.Features.Add(new LevelFeature()
             {
-                Experience = 0,
+                Experience = 1,
                 Level = 1,
                 RequiredExperience = 10
             });
@@ -192,7 +195,8 @@ namespace RPGame
             else if (message is ExperienceMessage)
             {
                 ExperienceMessage expMessage = (ExperienceMessage)message;
-                SpawnText(expMessage.Experience.ToString(), Color.Blue, expMessage.Target.Position, 13);
+                string text = string.Format("Exp: {0}", expMessage.Experience);
+                SpawnText(text, Color.Blue, expMessage.Target.Position, 13);
             }
             else if (message is LevelUpMessage)
             {

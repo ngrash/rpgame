@@ -42,8 +42,6 @@ namespace RPGame.Features
                     Target = Entity,
                     NewLevel = Level
                 });
-
-                Console.WriteLine(RequiredExperience);
             }
         }
 

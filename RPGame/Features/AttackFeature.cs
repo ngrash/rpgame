@@ -31,6 +31,12 @@ namespace RPGame.Features
                 hit["DIRECTION"] = Entity["DIRECTION"];
                 hit.Features.Add(new MoveFeature());
                 hit.Features.Add(new DieOnCollisonFeature());
+                hit.Features.Add(new SpriteFeature()
+                {
+                    Offset = new Point(-16, -16),
+                    Sprite = new SdlDotNet.Graphics.Sprites.Sprite(@"X:\Develop\Projekte\RPGame\RPGame\bin\Debug\attack.png")
+
+                });
                 hit.Features.Add(new DieAfterTimeFeature() {
                     TimeTillDeath = 0.5f
                 });

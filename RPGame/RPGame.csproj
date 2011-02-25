@@ -60,7 +60,6 @@
     <Compile Include="Features\IFeature.cs" />
     <Compile Include="Features\LevelFeature.cs" />
     <Compile Include="Features\MoveFeature.cs" />
-    <Compile Include="Features\PickUpAbleFeature.cs" />
     <Compile Include="Features\PlayerCharacterFeature.cs" />
     <Compile Include="Features\SpriteFeature.cs" />
     <Compile Include="Features\TextFeature.cs" />

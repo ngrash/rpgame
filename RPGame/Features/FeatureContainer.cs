@@ -32,6 +32,8 @@ namespace RPGame.Features
                 {
                     this.associatedEntity.MessageIncoming += ((IMessageReceiver)feature).ReceiveMessage;
                 }
+
+                feature.Initialize();
             }
         }
 

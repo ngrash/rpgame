@@ -9,5 +9,6 @@ namespace RPGame.Features
     {
         Entity Entity { get; set; }
         void Update(float timeElapsed);
+        void Initialize();
     }
 }

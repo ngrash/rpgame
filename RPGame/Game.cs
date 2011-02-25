@@ -27,10 +27,11 @@ namespace RPGame
 
         void Run()
         {
+            Video.WindowCaption = "RPGame";
+            SdlDotNet.Input.Mouse.ShowCursor = false;
+
             Events.Quit += (s, e) => Events.QuitApplication();
             Events.Tick += new EventHandler<TickEventArgs>(Events_Tick);
-            Events.KeyboardDown += new EventHandler<SdlDotNet.Input.KeyboardEventArgs>(Events_KeyboardDown);
-            Events.KeyboardUp += new EventHandler<SdlDotNet.Input.KeyboardEventArgs>(Events_KeyboardUp);
 
             this.screenSurface = Video.SetVideoMode(300, 300, false);
             this.renderSystem = new RenderSystem(this.screenSurface, this.map);
@@ -40,16 +41,6 @@ namespace RPGame
             this.map.Load();
 
             Events.Run();
-        }
-
-        void Events_KeyboardUp(object sender, SdlDotNet.Input.KeyboardEventArgs e)
-        {
-            this.map.ProcessMessage(new UserInputMessage() { KeyboardEvent = e });
-        }
-
-        void Events_KeyboardDown(object sender, SdlDotNet.Input.KeyboardEventArgs e)
-        {
-            this.map.ProcessMessage(new UserInputMessage() { KeyboardEvent = e });
         }
 
         void Events_Tick(object sender, TickEventArgs e)

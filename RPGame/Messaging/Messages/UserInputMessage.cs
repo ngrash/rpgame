@@ -6,7 +6,7 @@ using SdlDotNet.Input;
 
 namespace RPGame.Messaging.Messages
 {
-    class UserInputMessage : IMessage
+    public class UserInputMessage : IMessage
     {
         public KeyboardEventArgs KeyboardEvent
         {

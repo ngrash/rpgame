@@ -14,5 +14,6 @@ namespace RPGame.Features
         }
 
         public virtual void Update(float timeElapsed) { }
+        public virtual void Initialize() { }
     }
 }

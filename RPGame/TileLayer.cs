@@ -21,7 +21,7 @@ namespace RPGame
         {
             this.tiles = new Tile[5, 5];
 
-            Bitmap rawTileset = new Bitmap(@"X:\Develop\Projekte\RPGame\RPGame\bin\Debug\cell.png");
+            Bitmap rawTileset = new Bitmap(@"I:\Remote\Desktop\rpgame\RPGame\bin\Debug\cell.png");
             Tileset tileset = new Tileset(rawTileset, TILE_SIZE);
 
             for (int x = 0; x < this.tiles.GetLength(TILES_DIMENSION_X); x++)

@@ -18,7 +18,7 @@ namespace RPGame.Features
             if (message is StartMovingMessage)
             {
                 this.isMoving = true;
-                this.movingDirection = (Direction)Entity["DIRECTION"];
+                this.movingDirection = Entity.Attributes.Get<Direction>("DIRECTION");
             }
             else if (message is StopMovingMessage)
             {
@@ -30,11 +30,8 @@ namespace RPGame.Features
         {
             if (this.isMoving)
             {
-                int? speed = Entity["SPEED"] as int?;
-                if (speed != null)
-                {
-                    Entity.Move(this.movingDirection, (int)speed);
-                }
+                int speed = Entity.Attributes.Get<int>("SPEED");
+                Entity.Move(this.movingDirection, (int)speed);
             }
         }
     }

@@ -6,6 +6,7 @@ using RPGame.Messaging;
 using RPGame.Features;
 using System.Drawing;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace RPGame
 {
@@ -13,30 +14,36 @@ namespace RPGame
     {
         public event Action<IMessage> MessageIncoming;
 
-        Dictionary<string, object> attributes = new Dictionary<string, object>();
+        //Dictionary<string, object> attributes = new Dictionary<string, object>();
 
-        public object this[string attributeName]
+        //public object this[string attributeName]
+        //{
+        //    get {
+        //        attributeName = attributeName.ToUpper();
+
+        //        object value;
+        //        this.attributes.TryGetValue(attributeName, out value);
+        //        return value;
+        //    }
+        //    set
+        //    {
+        //        attributeName = attributeName.ToUpper();
+
+        //        if (!this.attributes.ContainsKey(attributeName))
+        //        {
+        //            this.attributes.Add(attributeName, value);
+        //        }
+        //        else
+        //        {
+        //            this.attributes[attributeName] = value;
+        //        }
+        //    }
+        //}
+
+        public AttributeCollection Attributes
         {
-            get {
-                attributeName = attributeName.ToUpper();
-
-                object value;
-                this.attributes.TryGetValue(attributeName, out value);
-                return value;
-            }
-            set
-            {
-                attributeName = attributeName.ToUpper();
-
-                if (!this.attributes.ContainsKey(attributeName))
-                {
-                    this.attributes.Add(attributeName, value);
-                }
-                else
-                {
-                    this.attributes[attributeName] = value;
-                }
-            }
+            get;
+            set;
         }
 
         public Point Position
@@ -51,7 +58,6 @@ namespace RPGame
             set;
         }
 
-        [XmlIgnore]
         public FeatureContainer Features
         {
             get;
@@ -91,6 +97,7 @@ namespace RPGame
 
         public Entity()
         {
+            Attributes = new AttributeCollection();
             Features = new FeatureContainer(associatedEntity: this);
         }
 
@@ -105,6 +112,6 @@ namespace RPGame
         public void Update(float timeElapsed)
         {
             Features.Update(timeElapsed);
-        }  
+        }
     }
 }

@@ -39,9 +39,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AttributeCollection.cs" />
     <Compile Include="CameraSystem.cs" />
+    <Compile Include="CharacterLayer.cs" />
     <Compile Include="CollisionSystem.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="DirectionHelper.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityLayer.cs" />
     <Compile Include="Features\AnimatedCharacterFeature.cs" />
@@ -57,11 +60,14 @@
     <Compile Include="Features\IFeature.cs" />
     <Compile Include="Features\LevelFeature.cs" />
     <Compile Include="Features\MoveFeature.cs" />
+    <Compile Include="Features\PickUpAbleFeature.cs" />
     <Compile Include="Features\PlayerCharacterFeature.cs" />
     <Compile Include="Features\SpriteFeature.cs" />
     <Compile Include="Features\TextFeature.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="HudLayer.cs" />
+    <Compile Include="IInputReceiver.cs" />
+    <Compile Include="InputSystem.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="Messaging\Messages\AttackMessage.cs" />
     <Compile Include="Messaging\Messages\CollisionMessage.cs" />

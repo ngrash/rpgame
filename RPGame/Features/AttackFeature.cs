@@ -27,15 +27,14 @@ namespace RPGame.Features
                     Position = Entity.Position,
                     Name = "hit"
                 };
-                hit["SPEED"] = 3;
-                hit["DIRECTION"] = Entity["DIRECTION"];
+                hit.Attributes.New<int>("SPEED", 3);
+                hit.Attributes.New<Direction>("DIRECTION", Entity.Attributes.Get<Direction>("DIRECTION"));
                 hit.Features.Add(new MoveFeature());
                 hit.Features.Add(new DieOnCollisonFeature());
                 hit.Features.Add(new SpriteFeature()
                 {
                     Offset = new Point(-16, -16),
-                    Sprite = new SdlDotNet.Graphics.Sprites.Sprite(@"X:\Develop\Projekte\RPGame\RPGame\bin\Debug\attack.png")
-
+                    Sprite = new SdlDotNet.Graphics.Sprites.Sprite(@"I:\Remote\Desktop\rpgame\RPGame\bin\Debug\attack.png")
                 });
                 hit.Features.Add(new DieAfterTimeFeature() {
                     TimeTillDeath = 0.5f

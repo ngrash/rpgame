@@ -22,7 +22,7 @@ namespace RPGame.Features
                 {
                     Key key = keyboardEvent.Key;
 
-                    if (GetDirectionFromKey(key) == (Direction)Entity["DIRECTION"])
+                    if (DirectionHelper.GetDirectionFromKey(key) == Entity.Attributes.Get<Direction>("DIRECTION"))
                     {
                         Entity.ProcessMessage(new StopMovingMessage());
                         this.isMoving = false;
@@ -30,12 +30,12 @@ namespace RPGame.Features
                 }
                 else if (keyboardEvent.Down)
                 {
-                    Direction newDirection = GetDirectionFromKey(keyboardEvent.Key);
+                    Direction newDirection = DirectionHelper.GetDirectionFromKey(keyboardEvent.Key);
                     if (newDirection != Direction.None)
                     {
                         this.isMoving = true;
 
-                        Entity["DIRECTION"] = newDirection;
+                        Entity.Attributes.Set<Direction>("DIRECTION", newDirection);
                         Entity.ProcessMessage(new StartMovingMessage());
                     }
                     // irgendeine Taste
@@ -50,29 +50,6 @@ namespace RPGame.Features
                     }
                 }
             }
-        }
-
-        Direction GetDirectionFromKey(Key key)
-        {
-            Direction newDirection = Direction.None;
-
-            switch (key)
-            {
-                case Key.UpArrow:
-                    newDirection = Direction.Up;
-                    break;
-                case Key.DownArrow:
-                    newDirection = Direction.Down;
-                    break;
-                case Key.LeftArrow:
-                    newDirection = Direction.Left;
-                    break;
-                case Key.RightArrow:
-                    newDirection = Direction.Right;
-                    break;
-            }
-
-            return newDirection;
         }
     }
 }

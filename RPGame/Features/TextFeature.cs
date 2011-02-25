@@ -27,6 +27,8 @@ namespace RPGame.Features
 
                 Surface textSurface = Font.Render(value, Color);
                 spriteFeature.Sprite = new SdlDotNet.Graphics.Sprites.Sprite(textSurface);
+
+                this.text = value;
             }
         }
 

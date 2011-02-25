@@ -33,6 +33,11 @@ namespace RPGame.Features
             set;
         }
 
+        public override void Initialize()
+        {
+            Entity.Attributes.New<Direction>("DIRECTION");
+        }
+
         public override void Update(float timeElapsed)
         {
             this.lastFrame += timeElapsed;
@@ -59,7 +64,7 @@ namespace RPGame.Features
         {
             if (message is StartMovingMessage)
             {
-                Direction = (Direction)Entity["DIRECTION"];
+                Direction = Entity.Attributes.Get<Direction>("DIRECTION");
                 Pose = CharacterTileset.CharacterPoseType.Walking1;
             }
             else if (message is StopMovingMessage)

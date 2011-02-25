@@ -11,19 +11,28 @@ using RPGame.Features;
 using RPGame.Messaging.Messages;
 using System.IO;
 using System.Xml.Serialization;
+using SdlDotNet.Input;
 
 namespace RPGame
 {
-    public class Map : IMessageChannel, IMessageReceiver
+    class Map : IMessageChannel, IMessageReceiver, IInputReceiver
     {
         const float MESSAGE_DELAY = 0.2f;
         float lastMessage = 0;
 
         EntityLayer entityLayer = new EntityLayer();
+        CharacterLayer characterLayer; 
         CollisionSystem collisionSystem = new CollisionSystem();
         Stack<Entity> entitiesToRemove = new Stack<Entity>();
         Stack<Entity> entitiesToAdd = new Stack<Entity>();
         Queue<Entity> messages = new Queue<Entity>();
+        Entity player;
+
+        public InputSystem InputSystem
+        {
+            get;
+            set;
+        }
 
         public List<Layer> Layers
         {
@@ -66,50 +75,57 @@ namespace RPGame
     
         public Map()
         {
+            InputSystem = new RPGame.InputSystem();
+
             Layers = new List<Layer>();
+
+            Layers.Add(new TileLayer());
+            Layers.Add(this.entityLayer);
         }
 
         public void Load()
         {
-            TileLayer groundLayer = new TileLayer();
-            Layers.Add(groundLayer);
-
-            Layers.Add(this.entityLayer);
-
             // Spieler erzeugen
-            Entity player = new Entity()
+            this.player = new Entity()
             {
                 Position = new Point(0, 0),
                 Name = "player"
             };
 
-            Layers.Add(new HudLayer(player));
+            Layers.Add(new HudLayer(this.player));
+            this.characterLayer = new CharacterLayer(this.player);
+            this.characterLayer.InputSystem = InputSystem;
+            Layers.Add(characterLayer);
+            InputSystem.AddChannel(characterLayer, "char");
 
-            player.Features.Add(new PlayerCharacterFeature());
-            player.Features.Add(new AnimatedCharacterFeature()
+            this.player.Features.Add(new PlayerCharacterFeature());
+            this.player.Features.Add(new AnimatedCharacterFeature()
             {
-                Tileset = new CharacterTileset(new Bitmap(@"X:\Develop\Projekte\RPGame\RPGame\bin\Debug\player.png")),
+                Tileset = new CharacterTileset(new Bitmap(@"I:\Remote\Desktop\rpgame\RPGame\bin\Debug\player.png")),
                 Offset = new Point(-12, -25),
                 Direction = Direction.Down,
                 Pose = CharacterTileset.CharacterPoseType.Standing
             });
-            player.Features.Add(new MoveFeature());
-            player.Features.Add(new CollidableFeature(this.collisionSystem)
+            this.player.Features.Add(new MoveFeature());
+            this.player.Features.Add(new CollidableFeature(this.collisionSystem)
             {
                 HitBox = new Rectangle(-8, -1, 15, 7)
             });
-            player.Features.Add(new AttackFeature(this.collisionSystem));
-            player.Features.Add(new LevelFeature()
+            this.player.Features.Add(new AttackFeature(this.collisionSystem));
+            this.player.Features.Add(new LevelFeature()
             {
                 Experience = 1,
                 Level = 1,
                 RequiredExperience = 10
             });
-            player["SPEED"] = 2;
-            SpawnEntity(player);
+            this.player.Attributes.New<int>("SPEED", 2);
+            this.player.Attributes.New<int>("STRENGTH", 10);
+            this.player.Attributes.New<int>("DEXTERITY", 10);
+            this.player.Attributes.New<int>("STAMINA", 10);
+            SpawnEntity(this.player);
             ProcessMessage(new SetFocusMessage()
             {
-                TargetEntity = player
+                TargetEntity = this.player
             });
 
             // Gegner erzeugen
@@ -120,7 +136,7 @@ namespace RPGame
             };
             enemy.Features.Add(new AnimatedCharacterFeature()
             {
-                Tileset = new CharacterTileset(new Bitmap(@"X:\Develop\Projekte\RPGame\RPGame\bin\Debug\enemy.png")),
+                Tileset = new CharacterTileset(new Bitmap(@"I:\Remote\Desktop\rpgame\RPGame\bin\Debug\enemy.png")),
                 Offset = new Point(-12, -25),
                 Direction = Direction.Down,
                 Pose = CharacterTileset.CharacterPoseType.Standing
@@ -139,6 +155,9 @@ namespace RPGame
                 HitBox = new Rectangle(-8, -12, 15, 10)
             });
             SpawnEntity(enemy);
+
+            InputSystem.AddChannel(this, "map");
+            InputSystem.ActivateChannel("map");
         }
 
         void SpawnEntity(Entity entity)
@@ -210,8 +229,8 @@ namespace RPGame
         {
             Entity textEntity = new Entity();
             textEntity.Features.Add(new MoveFeature());
-            textEntity["DIRECTION"] = Direction.Up;
-            textEntity["SPEED"] = 1;
+            textEntity.Attributes.New<Direction>("DIRECTION", Direction.Up);
+            textEntity.Attributes.New<int>("SPEED", 1);
             textEntity.ProcessMessage(new StartMovingMessage());
             textEntity.Position = position;
             textEntity.Features.Add(new DieAfterTimeFeature()
@@ -223,10 +242,23 @@ namespace RPGame
             {
                 Entity = textEntity,
                 Color = color,
-                Font = new SdlDotNet.Graphics.Font(@"X:\Develop\Projekte\RPGame\RPGame\bin\Debug\arial.ttf", fontSize),
+                Font = new SdlDotNet.Graphics.Font(@"I:\Remote\Desktop\rpgame\RPGame\bin\Debug\arial.ttf", fontSize),
                 Text = text
             });
             messages.Enqueue(textEntity);
+        }
+
+        public void HandleInput(UserInputMessage userInputMessage)
+        {
+            KeyboardEventArgs keyboardEventArgs = userInputMessage.KeyboardEvent;
+            if (keyboardEventArgs.Down && keyboardEventArgs.Key == Key.C)
+            {
+                this.player.ProcessMessage(new StopMovingMessage());
+                this.characterLayer.Active = true;
+                InputSystem.ActivateChannel("char");
+            }
+
+            ProcessMessage(userInputMessage);
         }
     }
 }
